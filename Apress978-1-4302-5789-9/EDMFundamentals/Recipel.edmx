@@ -5,36 +5,200 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       
-    <Schema Namespace="Recipel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="RecipelStoreContainer">
-    <EntitySet Name="People" EntityType="Recipel.Store.People" store:Type="Tables" Schema="Chapter2" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-  </EntityContainer>
-  <EntityType Name="People">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="MiddleName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="Recipel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Meter">
+          <Key>
+            <PropertyRef Name="MeterId" />
+          </Key>
+          <Property Name="MeterId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MeterName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="People">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Poem">
+          <Key>
+            <PropertyRef Name="PoemId" />
+          </Key>
+          <Property Name="PoemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PoetId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MeterId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Poet">
+          <Key>
+            <PropertyRef Name="PoetId" />
+          </Key>
+          <Property Name="PoetId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EF6Recipes.Chapter2.vwLibrary' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwLibrary">
+          <Key>
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="MiddleName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="MeterName" />
+          </Key>
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MeterName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Poem_Meter">
+          <End Role="Meter" Type="Self.Meter" Multiplicity="1" />
+          <End Role="Poem" Type="Self.Poem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meter">
+              <PropertyRef Name="MeterId" />
+            </Principal>
+            <Dependent Role="Poem">
+              <PropertyRef Name="MeterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Poem_Poet">
+          <End Role="Poet" Type="Self.Poet" Multiplicity="1" />
+          <End Role="Poem" Type="Self.Poem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Poet">
+              <PropertyRef Name="PoetId" />
+            </Principal>
+            <Dependent Role="Poem">
+              <PropertyRef Name="PoetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RecipelStoreContainer">
+          <EntitySet Name="Meter" EntityType="Self.Meter" Schema="Chapter2" store:Type="Tables" />
+          <EntitySet Name="People" EntityType="Self.People" Schema="Chapter2" store:Type="Tables" />
+          <EntitySet Name="Poem" EntityType="Self.Poem" Schema="Chapter2" store:Type="Tables" />
+          <EntitySet Name="Poet" EntityType="Self.Poet" Schema="Chapter2" store:Type="Tables" />
+          <EntitySet Name="vwLibrary" EntityType="Self.vwLibrary" store:Type="Views" store:Schema="Chapter2">
+            <DefiningQuery>SELECT 
+    [vwLibrary].[FirstName] AS [FirstName], 
+    [vwLibrary].[MiddleName] AS [MiddleName], 
+    [vwLibrary].[LastName] AS [LastName], 
+    [vwLibrary].[Title] AS [Title], 
+    [vwLibrary].[MeterName] AS [MeterName]
+    FROM [Chapter2].[vwLibrary] AS [vwLibrary]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Poem_Meter" Association="Self.FK_Poem_Meter">
+            <End Role="Meter" EntitySet="Meter" />
+            <End Role="Poem" EntitySet="Poem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Poem_Poet" Association="Self.FK_Poem_Poet">
+            <End Role="Poet" EntitySet="Poet" />
+            <End Role="Poem" EntitySet="Poem" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Recipel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="EF6RecipesContext" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="People" EntityType="Recipel.Person" />
+          <EntitySet Name="Meters" EntityType="Recipel.Meter" />
+          <EntitySet Name="Poems" EntityType="Recipel.Poem" />
+          <EntitySet Name="Poets" EntityType="Recipel.Poet" />
+          <AssociationSet Name="FK_Poem_Meter" Association="Recipel.FK_Poem_Meter">
+            <End Role="Meter" EntitySet="Meters" />
+            <End Role="Poem" EntitySet="Poems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Poem_Poet" Association="Recipel.FK_Poem_Poet">
+            <End Role="Poet" EntitySet="Poets" />
+            <End Role="Poem" EntitySet="Poems" />
+          </AssociationSet>
+          <EntitySet Name="vwLibraries" EntityType="Recipel.vwLibrary" />
         </EntityContainer>
         <EntityType Name="Person">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Name="FirstName" Type="String" Nullable="false" />
-          <Property Name="LastName" Type="String" Nullable="false" />
-          <Property Name="MiddleName" Type="String" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Meter">
+          <Key>
+            <PropertyRef Name="MeterId" />
+          </Key>
+          <Property Name="MeterId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MeterName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Poems" Relationship="Recipel.FK_Poem_Meter" FromRole="Meter" ToRole="Poem" />
+        </EntityType>
+        <EntityType Name="Poem">
+          <Key>
+            <PropertyRef Name="PoemId" />
+          </Key>
+          <Property Name="PoemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PoetId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MeterId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Meter" Relationship="Recipel.FK_Poem_Meter" FromRole="Poem" ToRole="Meter" />
+          <NavigationProperty Name="Poet" Relationship="Recipel.FK_Poem_Poet" FromRole="Poem" ToRole="Poet" />
+        </EntityType>
+        <EntityType Name="Poet">
+          <Key>
+            <PropertyRef Name="PoetId" />
+          </Key>
+          <Property Name="PoetId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Poems" Relationship="Recipel.FK_Poem_Poet" FromRole="Poet" ToRole="Poem" />
+        </EntityType>
+        <Association Name="FK_Poem_Meter">
+          <End Type="Recipel.Meter" Role="Meter" Multiplicity="1" />
+          <End Type="Recipel.Poem" Role="Poem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Meter">
+              <PropertyRef Name="MeterId" />
+            </Principal>
+            <Dependent Role="Poem">
+              <PropertyRef Name="MeterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Poem_Poet">
+          <End Type="Recipel.Poet" Role="Poet" Multiplicity="1" />
+          <End Type="Recipel.Poem" Role="Poem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Poet">
+              <PropertyRef Name="PoetId" />
+            </Principal>
+            <Dependent Role="Poem">
+              <PropertyRef Name="PoetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vwLibrary">
+          <Key>
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="MiddleName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="Title" />
+            <PropertyRef Name="MeterName" />
+          </Key>
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MeterName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -54,6 +218,45 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="Meters">
+            <EntityTypeMapping TypeName="Recipel.Meter">
+              <MappingFragment StoreEntitySet="Meter">
+                <ScalarProperty Name="MeterName" ColumnName="MeterName" />
+                <ScalarProperty Name="MeterId" ColumnName="MeterId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Poems">
+            <EntityTypeMapping TypeName="Recipel.Poem">
+              <MappingFragment StoreEntitySet="Poem">
+                <ScalarProperty Name="MeterId" ColumnName="MeterId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="PoetId" ColumnName="PoetId" />
+                <ScalarProperty Name="PoemId" ColumnName="PoemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Poets">
+            <EntityTypeMapping TypeName="Recipel.Poet">
+              <MappingFragment StoreEntitySet="Poet">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="PoetId" ColumnName="PoetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwLibraries">
+            <EntityTypeMapping TypeName="Recipel.vwLibrary">
+              <MappingFragment StoreEntitySet="vwLibrary">
+                <ScalarProperty Name="MeterName" ColumnName="MeterName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -71,6 +274,7 @@
         <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
         <edmx:DesignerProperty Name="DefaultDatabaseSchema" Value="Chapter2" />
         <edmx:DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </edmx:DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->

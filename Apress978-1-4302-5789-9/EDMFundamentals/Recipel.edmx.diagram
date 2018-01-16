@@ -5,7 +5,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="515fadf51d9c4dccb5165173c807ea8c" Name="Diagram1" >
-        <EntityTypeShape EntityType="Recipel.Person" Width="1.5" PointX="8.125" PointY="1.875" />
+        <EntityTypeShape EntityType="Recipel.Person" Width="1.5" PointX="6.375" PointY="5.5" />
+        <EntityTypeShape EntityType="Recipel.Meter" Width="1.5" PointX="6.25" PointY="1.125" />
+        <EntityTypeShape EntityType="Recipel.Poem" Width="1.5" PointX="3.375" PointY="0.875" />
+        <EntityTypeShape EntityType="Recipel.Poet" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="Recipel.FK_Poem_Meter" />
+        <AssociationConnector Association="Recipel.FK_Poem_Poet" />
+        <EntityTypeShape EntityType="Recipel.vwLibrary" Width="1.5" PointX="0.75" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

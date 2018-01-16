@@ -26,5 +26,9 @@ namespace EDMFundamentals
         }
     
         public virtual DbSet<Person> People { get; set; }
+        public virtual DbSet<Meter> Meters { get; set; }
+        public virtual DbSet<Poem> Poems { get; set; }
+        public virtual DbSet<Poet> Poets { get; set; }
+        public virtual DbSet<vwLibrary> vwLibraries { get; set; }
     }
 }

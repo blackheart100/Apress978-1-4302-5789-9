@@ -51,7 +51,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FunCollection.cs" />
+    <Compile Include="Meter.cs">
+      <DependentUpon>Recipel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Person.cs">
+      <DependentUpon>Recipel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Poem.cs">
+      <DependentUpon>Recipel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Poet.cs">
       <DependentUpon>Recipel.tt</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -70,6 +79,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Recipel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="vwLibrary.cs">
+      <DependentUpon>Recipel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
