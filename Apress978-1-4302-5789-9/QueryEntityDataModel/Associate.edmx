@@ -1,64 +1,133 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl" Namespace="Associate.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-        <EntityContainer Name="AssociateTargetContainer" >
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      
+    <Schema Namespace="Associate.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AssociateStoreContainer">
+    <EntitySet Name="AssociateSalaries" EntityType="Associate.Store.AssociateSalaries" store:Type="Tables" Schema="Chapter3" />
+    <EntitySet Name="Associates" EntityType="Associate.Store.Associates" store:Type="Tables" Schema="Chapter3" />
+    <AssociationSet Name="FK_AssociateSalaries_Associates" Association="Associate.Store.FK_AssociateSalaries_Associates">
+      <End Role="Associate" EntitySet="Associates" />
+      <End Role="AssociateSalary" EntitySet="AssociateSalaries" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="AssociateSalaries">
+    <Key>
+      <PropertyRef Name="SalaryID" />
+    </Key>
+    <Property Name="SalaryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AssociateID" Type="int" Nullable="false" />
+    <Property Name="Salary" Type="decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="SalaryDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Associates">
+    <Key>
+      <PropertyRef Name="AssociateID" />
+    </Key>
+    <Property Name="AssociateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_AssociateSalaries_Associates">
+    <End Role="Associate" Type="Associate.Store.Associates" Multiplicity="1" />
+    <End Role="AssociateSalary" Type="Associate.Store.AssociateSalaries" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Associate">
+        <PropertyRef Name="AssociateID" />
+      </Principal>
+      <Dependent Role="AssociateSalary">
+        <PropertyRef Name="AssociateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Associate" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" >
-        <EntityContainer Name="AssociateContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Associates" EntityType="Associate.Associate" />
+      <Schema Namespace="Associate" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="AssociateContainer" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="AssociateSalaries" EntityType="Associate.AssociateSalary" />
+          <EntitySet Name="Associates" EntityType="Associate.Associate" />
+          <AssociationSet Name="FK_AssociateSalaries_Associates" Association="Associate.FK_AssociateSalaries_Associates">
+            <End Role="Associate" EntitySet="Associates" />
+            <End Role="AssociateSalary" EntitySet="AssociateSalaries" />
+          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Associate">
-          <Key>
-            <PropertyRef Name="AssociateID" />
-          </Key>
-          <Property Name="AssociateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <NavigationProperty Name="AssociateSalaries" />
-        </EntityType>
         <EntityType Name="AssociateSalary">
           <Key>
             <PropertyRef Name="SalaryID" />
           </Key>
           <Property Name="SalaryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AssociateID" Type="String" Nullable="false" />
-          <Property Name="Salary" Type="String" Nullable="false" />
-          <Property Name="SalaryDate" Type="String" Nullable="false" />
-          <NavigationProperty Name="Associate" />
+          <Property Name="AssociateID" Type="Int32" Nullable="false" />
+          <Property Name="Salary" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="SalaryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Associate" Relationship="Associate.FK_AssociateSalaries_Associates" FromRole="AssociateSalary" ToRole="Associate" />
         </EntityType>
+        <EntityType Name="Associate">
+          <Key>
+            <PropertyRef Name="AssociateID" />
+          </Key>
+          <Property Name="AssociateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AssociateSalaries" Relationship="Associate.FK_AssociateSalaries_Associates" FromRole="Associate" ToRole="AssociateSalary" />
+        </EntityType>
+        <Association Name="FK_AssociateSalaries_Associates">
+          <End Type="Associate.Associate" Role="Associate" Multiplicity="1" />
+          <End Type="Associate.AssociateSalary" Role="AssociateSalary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Associate">
+              <PropertyRef Name="AssociateID" />
+            </Principal>
+            <Dependent Role="AssociateSalary">
+              <PropertyRef Name="AssociateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs" Space="C-S">
-        <Alias Key="Model" Value="Associate" />
-        <Alias Key="Target" Value="Associate.Store" />
-        <EntityContainerMapping CdmEntityContainer="AssociateContainer" StorageEntityContainer="AssociateTargetContainer">
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+      
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AssociateStoreContainer" CdmEntityContainer="AssociateContainer">
+    <EntitySetMapping Name="AssociateSalaries">
+      <EntityTypeMapping TypeName="IsTypeOf(Associate.AssociateSalary)">
+        <MappingFragment StoreEntitySet="AssociateSalaries">
+          <ScalarProperty Name="SalaryID" ColumnName="SalaryID" />
+          <ScalarProperty Name="AssociateID" ColumnName="AssociateID" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="SalaryDate" ColumnName="SalaryDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Associates">
+      <EntityTypeMapping TypeName="IsTypeOf(Associate.Associate)">
+        <MappingFragment StoreEntitySet="Associates">
+          <ScalarProperty Name="AssociateID" ColumnName="AssociateID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <edmx:Designer>
     <edmx:Connection>
-      <DesignerInfoPropertySet>
-        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
-      </DesignerInfoPropertySet>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </edmx:DesignerInfoPropertySet>
     </edmx:Connection>
     <edmx:Options>
-      <DesignerInfoPropertySet>
-        <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
-      </DesignerInfoPropertySet>
+      <edmx:DesignerInfoPropertySet>
+        <edmx:DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <edmx:DesignerProperty Name="EnablePluralization" Value="True" />
+        <edmx:DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <edmx:DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <edmx:DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <edmx:DesignerProperty Name="DefaultDatabaseSchema" Value="Chapter3" />
+      </edmx:DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>

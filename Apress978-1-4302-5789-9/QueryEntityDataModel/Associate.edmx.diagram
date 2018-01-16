@@ -5,8 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b0f06b46ec1d48979ec94d6b12122766" Name="Diagram1" >
-        <EntityTypeShape EntityType="Associate.Associate" Width="1.5" PointX="5.125" PointY="1.875" />
-        <EntityTypeShape EntityType="Associate.AssociateSalary" Width="1.5" PointX="8.25" PointY="1.5" />
+        <EntityTypeShape EntityType="Associate.AssociateSalary" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="Associate.Associate" Width="1.5" PointX="0.75" PointY="1.125" />
+        <AssociationConnector Association="Associate.FK_AssociateSalaries_Associates" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
