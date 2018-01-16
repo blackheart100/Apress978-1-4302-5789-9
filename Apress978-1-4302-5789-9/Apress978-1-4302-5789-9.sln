@@ -8,7 +8,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{528C5F46-B7A
 		E:\Entity Framework 6 Recipes.pdf = E:\Entity Framework 6 Recipes.pdf
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDMFundamentals", "EDMFundamentals\EDMFundamentals.csproj", "{DDEE26AB-60B0-48B8-A6A1-24B1CE8BAB99}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDEE26AB-60B0-48B8-A6A1-24B1CE8BAB99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDEE26AB-60B0-48B8-A6A1-24B1CE8BAB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDEE26AB-60B0-48B8-A6A1-24B1CE8BAB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDEE26AB-60B0-48B8-A6A1-24B1CE8BAB99}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
