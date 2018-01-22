@@ -97,8 +97,14 @@
       <DependentUpon>Associate.tt</DependentUpon>
     </Compile>
     <Compile Include="FunCollection.cs" />
+    <Compile Include="Payment.cs">
+      <DependentUpon>Associate.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Student.cs">
+      <DependentUpon>Associate.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Associate.edmx">

@@ -5,44 +5,63 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       
-    <Schema Namespace="Associate.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityContainer Name="AssociateStoreContainer">
-    <EntitySet Name="AssociateSalaries" EntityType="Associate.Store.AssociateSalaries" store:Type="Tables" Schema="Chapter3" />
-    <EntitySet Name="Associates" EntityType="Associate.Store.Associates" store:Type="Tables" Schema="Chapter3" />
-    <AssociationSet Name="FK_AssociateSalaries_Associates" Association="Associate.Store.FK_AssociateSalaries_Associates">
-      <End Role="Associate" EntitySet="Associates" />
-      <End Role="AssociateSalary" EntitySet="AssociateSalaries" />
-    </AssociationSet>
-  </EntityContainer>
-  <EntityType Name="AssociateSalaries">
-    <Key>
-      <PropertyRef Name="SalaryID" />
-    </Key>
-    <Property Name="SalaryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="AssociateID" Type="int" Nullable="false" />
-    <Property Name="Salary" Type="decimal" Nullable="false" Precision="18" Scale="2" />
-    <Property Name="SalaryDate" Type="datetime" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Associates">
-    <Key>
-      <PropertyRef Name="AssociateID" />
-    </Key>
-    <Property Name="AssociateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-  </EntityType>
-  <Association Name="FK_AssociateSalaries_Associates">
-    <End Role="Associate" Type="Associate.Store.Associates" Multiplicity="1" />
-    <End Role="AssociateSalary" Type="Associate.Store.AssociateSalaries" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Associate">
-        <PropertyRef Name="AssociateID" />
-      </Principal>
-      <Dependent Role="AssociateSalary">
-        <PropertyRef Name="AssociateID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-</Schema></edmx:StorageModels>
+    <Schema Namespace="Associate.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Associates">
+          <Key>
+            <PropertyRef Name="AssociateID" />
+          </Key>
+          <Property Name="AssociateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AssociateSalaries">
+          <Key>
+            <PropertyRef Name="SalaryID" />
+          </Key>
+          <Property Name="SalaryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Salary" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="SalaryDate" Type="datetime" Nullable="false" />
+          <Property Name="AssociateID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Vendor" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Degree" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AssociateAssociateSalary">
+          <End Role="Associates" Type="Self.Associates" Multiplicity="1" />
+          <End Role="AssociateSalaries" Type="Self.AssociateSalaries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Associates">
+              <PropertyRef Name="AssociateID" />
+            </Principal>
+            <Dependent Role="AssociateSalaries">
+              <PropertyRef Name="AssociateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AssociateStoreContainer">
+          <EntitySet Name="Associates" EntityType="Self.Associates" Schema="Chapter3" store:Type="Tables" />
+          <EntitySet Name="AssociateSalaries" EntityType="Self.AssociateSalaries" Schema="Chapter3" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="Chapter3" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="Chapter3" store:Type="Tables" />
+          <AssociationSet Name="FK_AssociateAssociateSalary" Association="Self.FK_AssociateAssociateSalary">
+            <End Role="Associates" EntitySet="Associates" />
+            <End Role="AssociateSalaries" EntitySet="AssociateSalaries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Associate" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
@@ -53,6 +72,8 @@
             <End Role="Associate" EntitySet="Associates" />
             <End Role="AssociateSalary" EntitySet="AssociateSalaries" />
           </AssociationSet>
+          <EntitySet Name="Payments" EntityType="Associate.Payment" />
+          <EntitySet Name="Students" EntityType="Associate.Student" />
         </EntityContainer>
         <EntityType Name="AssociateSalary">
           <Key>
@@ -61,7 +82,7 @@
           <Property Name="SalaryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AssociateID" Type="Int32" Nullable="false" />
           <Property Name="Salary" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
-          <Property Name="SalaryDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="SalaryDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Associate" Relationship="Associate.FK_AssociateSalaries_Associates" FromRole="AssociateSalary" ToRole="Associate" />
         </EntityType>
         <EntityType Name="Associate">
@@ -84,6 +105,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Vendor" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentId" />
+          </Key>
+          <Property Name="StudentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Degree" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -109,6 +147,25 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="Associate.Payment">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="Vendor" ColumnName="Vendor" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="Associate.Student">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Degree" ColumnName="Degree" />
+                <ScalarProperty Name="StudentId" ColumnName="StudentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

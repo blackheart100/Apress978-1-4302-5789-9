@@ -22,13 +22,12 @@ namespace QueryEntityDataModel
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Associate>().ToTable("Chapter3.Associate"); 
-            modelBuilder.Entity<AssociateSalary>().ToTable("Chapter3.AssociateSalary");
-            modelBuilder.Entity<AssociateSalary>().HasKey(x => x.SalaryID); 
-            base.OnModelCreating(modelBuilder); 
+            modelBuilder.Entity<Student>().ToTable("Chapter3.Student");
         }
     
         public virtual DbSet<AssociateSalary> AssociateSalaries { get; set; }
         public virtual DbSet<Associate> Associates { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
     }
 }

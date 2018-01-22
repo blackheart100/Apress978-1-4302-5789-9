@@ -8,6 +8,8 @@
         <EntityTypeShape EntityType="Associate.AssociateSalary" Width="1.5" PointX="3" PointY="0.875" />
         <EntityTypeShape EntityType="Associate.Associate" Width="1.5" PointX="0.75" PointY="1.125" />
         <AssociationConnector Association="Associate.FK_AssociateSalaries_Associates" />
+        <EntityTypeShape EntityType="Associate.Payment" Width="1.5" PointX="6" PointY="1" />
+        <EntityTypeShape EntityType="Associate.Student" Width="1.5" PointX="8" PointY="1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
